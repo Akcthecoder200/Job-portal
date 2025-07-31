@@ -8,6 +8,8 @@ const ProfilePage = () => {
     bio: '',
     linkedinUrl: '',
     email: '',
+    walletAddress: '',
+    skills: '',
     _id: '',
   });
   const [editMode, setEditMode] = useState(false);
@@ -38,14 +40,14 @@ const ProfilePage = () => {
         });
         const data = await response.json();
 
-     console.log(data);
-     
         if (data.success) {
           setProfile({
             name: data.userData.name || '',
             bio: data.userData.bio || '',
             linkedinUrl: data.userData.linkedinUrl || '',
             email: data.userData.email || '',
+            walletAddress: data.userData.walletAddress || '',
+            skills: (data.userData.skills || []).join(', '),
             _id: data.userData._id || '',
           });
         } else {
@@ -55,7 +57,7 @@ const ProfilePage = () => {
           handleLogout();
         }
       } catch (error) {
-         setMessage('Network error or server unavailable.');
+         setMessage('Network error or server unavailable.'); 
         console.error('Profile fetch error:', error);
         localStorage.removeItem('jwtToken');
         localStorage.removeItem('userEmail');
@@ -87,6 +89,8 @@ const ProfilePage = () => {
           name: profile.name,
           bio: profile.bio,
           linkedinUrl: profile.linkedinUrl,
+          walletAddress: profile.walletAddress,
+          skills: profile.skills,
         }),
       });
       const data = await response.json();
@@ -114,17 +118,20 @@ const ProfilePage = () => {
 
   if (message && !editMode) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <div className="bg-white p-8 rounded shadow">
-          <p className="text-red-600">{message}</p>
-          <button
-            onClick={handleLogout}
-            className="mt-4 bg-red-600 text-white px-4 py-2 rounded"
-          >
-            Logout
-          </button>
-        </div>
-      </div>
+    //   <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    //     <div className="bg-white p-8 rounded shadow">
+    //       <p className="text-red-600">{message}</p>
+    //       <button
+    //         onClick={handleLogout}
+    //         className="mt-4 bg-red-600 text-white px-4 py-2 rounded"
+    //       >
+    //         Logout
+    //       </button>
+    //     </div>
+    //   </div>
+    <div>
+        <ProfilePage/>
+    </div>
     );
   }
 
@@ -172,6 +179,29 @@ const ProfilePage = () => {
           onChange={handleProfileChange}
           disabled={!editMode}
           className="w-full border rounded px-3 py-2"
+        />
+      </div>
+      <div className="mb-4">
+        <label className="block font-semibold mb-1">Wallet Address</label>
+        <input
+          type="text"
+          name="walletAddress"
+          value={profile.walletAddress}
+          onChange={handleProfileChange}
+          disabled={!editMode}
+          className="w-full border rounded px-3 py-2"
+        />
+      </div>
+      <div className="mb-4">
+        <label className="block font-semibold mb-1">Skills (comma separated)</label>
+        <input
+          type="text"
+          name="skills"
+          value={profile.skills}
+          onChange={handleProfileChange}
+          disabled={!editMode}
+          className="w-full border rounded px-3 py-2"
+          placeholder="e.g. JavaScript, React, Node.js"
         />
       </div>
       <div className="flex gap-2">
