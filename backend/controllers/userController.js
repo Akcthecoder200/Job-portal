@@ -53,9 +53,9 @@ export const loginUser = async (req, res) => {
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
-    
-     console.log(`User ${user.email} logged in successfully`);
-     
+
+    console.log(`User ${user.email} logged in successfully`);
+
     res.json({
       message: "Logged in successfully",
       user: { id: user.id, email: user.email },
@@ -69,15 +69,57 @@ export const loginUser = async (req, res) => {
 
 export const getProfile = async (req, res) => {
   try {
-    const { userId } = req.userId;
+    const userId = req.userId;
+    if (!userId) {
+      return res
+        .status(401)
+        .json({ success: false, message: "User not authenticated" });
+    }
 
-    const userData = await userModel.findById(userId).select("-password");
+    const user = await userModel.findById(userId).select("-password");
 
-    console.log(userId, userData);
+    console.log(user);
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
 
-    res.json({ success: true, userData });
+    res.json({ success: true, userData: user });
   } catch (error) {
-    console.log(error);
-    res.json({ success: false, message: error.message });
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+export const updateProfile = async (req, res) => {
+  try {
+    const userId = req.userId;
+    if (!userId) {
+      return res
+        .status(401)
+        .json({ success: false, message: "User not authenticated" });
+    }
+
+    const { name, bio, linkedinUrl, walletAddress, skills } = req.body;
+
+    const updatedUser = await userModel.findByIdAndUpdate(
+      userId,
+      { name, bio, linkedinUrl, walletAddress, skills },
+      { new: true, runValidators: true, select: "-password" }
+    );
+
+    if (!updatedUser) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+
+    res.json({
+      success: true,
+      message: "Profile updated successfully!",
+      userData: updatedUser,
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
   }
 };

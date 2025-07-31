@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../context/context";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const { handleLogout } = useContext(AuthContext);
@@ -8,6 +9,7 @@ const Dashboard = () => {
   );
   const [userEmail, setUserEmail] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
   const API_BASE_URL = "http://localhost:5000/api";
 
@@ -29,7 +31,7 @@ const Dashboard = () => {
         const response = await fetch(`${API_BASE_URL}/dashboard`, {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${token}`,
+            "token": token,
           },
         });
 
@@ -41,7 +43,7 @@ const Dashboard = () => {
           setDashboardMessage(
             data.message || "Failed to fetch dashboard data."
           );
-          onLogout();
+          handleLogout();
         }
       } catch (error) {
         console.error("Dashboard fetch error:", error);
@@ -70,16 +72,24 @@ const Dashboard = () => {
               <span className="font-semibold text-blue-700">{userEmail}</span>!
             </p>
             <p className="text-gray-600 mb-8">{dashboardMessage}</p>
-            <button
-              onClick={() => {
-                localStorage.removeItem("jwtToken");
-                localStorage.removeItem("userEmail");
-                handleLogout();
-              }}
-              className="w-full py-2 px-4 border border-transparent rounded-lg shadow-sm text-lg font-semibold text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition duration-200 ease-in-out transform hover:scale-105"
-            >
-              Logout
-            </button>
+            <div className="flex flex-col gap-3">
+              <button
+                onClick={() => navigate("/profile")}
+                className="w-full py-2 px-4 border border-transparent rounded-lg shadow-sm text-lg font-semibold text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-200 ease-in-out transform hover:scale-105"
+              >
+                Go to Profile
+              </button>
+              <button
+                onClick={() => {
+                  localStorage.removeItem("jwtToken");
+                  localStorage.removeItem("userEmail");
+                  handleLogout();
+                }}
+                className="w-full py-2 px-4 border border-transparent rounded-lg shadow-sm text-lg font-semibold text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition duration-200 ease-in-out transform hover:scale-105"
+              >
+                Logout
+              </button>
+            </div>
           </>
         )}
       </div>
