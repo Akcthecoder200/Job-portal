@@ -13,9 +13,11 @@ const authUser = async (req, res, next) => {
     console.log(`Decoded token: ${JSON.stringify(token_decode)}`);
     
     req.userId = token_decode.id;
+    req.user = token_decode; // Attach user info to the request object
     
     console.log(`User ID from token: ${req.userId}`);
-    // Use req.userId instead of req.body.userId
+
+    
 
     next();
   } catch (error) {

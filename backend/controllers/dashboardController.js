@@ -1,5 +1,6 @@
 import userModel from "../models/userModel.js";
 
+
 export const dashboardController = async (req, res) => {
   try {
     // Assuming you want to return some user data or dashboard info

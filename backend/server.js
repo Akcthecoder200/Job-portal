@@ -8,6 +8,7 @@ import userRouter from "./routes/userRoute.js";
 import mongoose from "mongoose";
 import userModel from "./models/userModel.js";
 import dashboardRouter from "./routes/dashboardRoute.js";
+import jobRouter from "./routes/jobRoute.js";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -32,7 +33,7 @@ app.use(express.json());
 
 app.use("/api/user", userRouter);
 app.use("/api", dashboardRouter);
-
+app.use("/api/jobs", jobRouter);
 
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
