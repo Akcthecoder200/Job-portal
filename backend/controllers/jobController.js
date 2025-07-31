@@ -80,3 +80,25 @@ export const getJobsByLocation = async (req, res) => {
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
+
+
+export const getUserPosts = async (req, res) => {
+  try {
+    // req.userId comes from your authUser middleware
+    const userJobs = await Job.find({ postedBy: req.userId })
+      .populate("postedBy", "name email")
+      .sort({ createdAt: -1 }); // Sort by newest first
+
+    res.json({ 
+      success: true, 
+      jobs: userJobs,
+      count: userJobs.length 
+    });
+  } catch (error) {
+    console.error("Error fetching user posts:", error);
+    res.status(500).json({ 
+      success: false, 
+      message: "Server error while fetching user posts" 
+    });
+  }
+};

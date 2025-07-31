@@ -6,6 +6,7 @@ import ProfilePage from './components/ProfilePage';
 import { AuthContext } from './context/context';
 import PostJobComponent from './components/PostJob.jsx';
 import JobListingComponent from './components/JobList.jsx';
+import UserPostsComponent from './components/UserPost.jsx';
 
 function App() {
   const { isAuthenticated } = useContext(AuthContext);
@@ -19,6 +20,7 @@ function App() {
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/post-job" element={<PostJobComponent />} />
             <Route path="/jobs" element={<JobListingComponent />} />
+            <Route path="/my-posts" element={<UserPostsComponent />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         ) : (
