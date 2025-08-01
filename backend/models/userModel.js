@@ -5,13 +5,13 @@ const userSchema = new mongoose.Schema(
     email: {
       type: String,
       required: true,
-      unique: true, // Avoid duplicate accounts
+      unique: true,
       lowercase: true,
       trim: true,
     },
     password: {
       type: String,
-      required: true, // Should be hashed before saving
+      required: true,
     },
     name: {
       type: String,
@@ -39,7 +39,7 @@ const userSchema = new mongoose.Schema(
     },
   },
   {
-    timestamps: true, 
+    timestamps: true,
   }
 );
 

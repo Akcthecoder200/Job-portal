@@ -1,5 +1,5 @@
 // models/Job.js
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const jobSchema = mongoose.Schema(
   {
@@ -12,41 +12,40 @@ const jobSchema = mongoose.Schema(
       required: true,
     },
     skills: {
-      type: [String], // Array of required skills for the job
+      type: [String],
       required: true,
     },
     budgetOrSalary: {
-      type: String, // Can be a range, fixed amount, or text
+      type: String,
       required: true,
     },
     location: {
       type: String,
-      default: 'Remote', // Default to 'Remote' if not specified
+      default: "Remote",
     },
     tags: {
-      type: [String], // Additional tags for filtering
+      type: [String],
       default: [],
     },
     postedBy: {
-      type: mongoose.Schema.Types.ObjectId, // Reference to the User who posted the job
+      type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: 'user',
-        // Refers to the 'User' model
+      ref: "user",
     },
-    posterEmail: { // Storing email directly for easier display
+    posterEmail: {
       type: String,
       required: true,
     },
     paymentConfirmed: {
       type: Boolean,
-      default: false, // This will be updated to true after blockchain payment in Module 3
+      default: false,
     },
   },
   {
-    timestamps: true, // Adds createdAt and updatedAt fields
+    timestamps: true,
   }
 );
 
-const Job = mongoose.model('Job', jobSchema);
+const Job = mongoose.model("Job", jobSchema);
 
 export default Job;

@@ -7,6 +7,6 @@ const generativeRouter = express.Router();
 generativeRouter.post("/match-score", authUser, matchScore);
 generativeRouter.get("/smart-suggestions", authUser, smartSuggestions);
  
-generativeRouter.post("/extract-skills", authUser, extractSkills); // Added GET route for match score
+generativeRouter.post("/extract-skills", authUser, extractSkills);
 
 export default generativeRouter;

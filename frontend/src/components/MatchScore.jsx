@@ -25,8 +25,6 @@ const MatchScoreDisplay = ({
       console.log(jobDescription);
       console.log(userBio);
       console.log(userSkills);
-      // userBio,
-      // userSkills);
 
       try {
         const response = await fetch(`${API_BASE_URL}/ai/match-score`, {

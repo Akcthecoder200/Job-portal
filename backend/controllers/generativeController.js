@@ -31,11 +31,11 @@ export const matchScore = async (req, res) => {
   { "matchScore": "integer", "rationale": "string" }`;
 
   try {
-    // log("Prompt for AI");
+
     let chatHistory = [];
     chatHistory.push({ role: "user", parts: [{ text: prompt }] });
     const payload = { contents: chatHistory };
-    const apiKey = "AIzaSyDW9l9jgavTk-Xu0sa2TEb3_2muHXBDdOs";
+    const apiKey = process.env.GENERATIVE_AI_API_KEY ;
     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
 
     const response = await fetch(apiUrl, {
@@ -100,7 +100,7 @@ export const smartSuggestions = async (req, res) => {
     let chatHistory = [];
     chatHistory.push({ role: "user", parts: [{ text: combinedPrompt }] });
     const payload = { contents: chatHistory };
-    const apiKey = "AIzaSyDW9l9jgavTk-Xu0sa2TEb3_2muHXBDdOs";
+    const apiKey =process.env.GENERATIVE_AI_API_KEY ;
     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
 
     const response = await fetch(apiUrl, {
@@ -165,7 +165,7 @@ export const extractSkills = async (req, res) => {
     let chatHistory = [];
     chatHistory.push({ role: "user", parts: [{ text: prompt }] });
     const payload = { contents: chatHistory };
-    const apiKey = "AIzaSyDW9l9jgavTk-Xu0sa2TEb3_2muHXBDdOs";
+    const apiKey = process.env.GENERATIVE_AI_API_KEY ;
     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
 
     const response = await fetch(apiUrl, {

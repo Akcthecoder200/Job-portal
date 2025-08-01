@@ -10,6 +10,7 @@ import userModel from "./models/userModel.js";
 import dashboardRouter from "./routes/dashboardRoute.js";
 import jobRouter from "./routes/jobRoute.js";
 import generativeRouter from "./routes/generativeRoute.js";
+import paymentRouter from "./routes/paymentRoute.js";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -35,5 +36,6 @@ app.use("/api/user", userRouter);
 app.use("/api", dashboardRouter);
 app.use("/api/jobs", jobRouter);
 app.use("/api/ai", generativeRouter);
+app.use("/api/payment", paymentRouter);
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

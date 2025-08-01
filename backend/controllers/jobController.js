@@ -21,6 +21,7 @@ export const createJob = async (req, res) => {
     tags,
     postedBy: req.userId,
     posterEmail,
+    paymentConfirmed: false,
   });
 
   try {
@@ -37,8 +38,7 @@ export const getJobs = async (req, res) => {
   try {
     console.log("Fetching all jobs");
     const jobs = await Job.find().populate("postedBy", "name email");
-    // console.log(jobs);
-    
+
     res.json({ success: true, jobs });
   } catch (error) {
     console.error("Error fetching jobs:", error);
@@ -81,24 +81,22 @@ export const getJobsByLocation = async (req, res) => {
   }
 };
 
-
 export const getUserPosts = async (req, res) => {
   try {
-    // req.userId comes from your authUser middleware
     const userJobs = await Job.find({ postedBy: req.userId })
       .populate("postedBy", "name email")
-      .sort({ createdAt: -1 }); // Sort by newest first
+      .sort({ createdAt: -1 });
 
-    res.json({ 
-      success: true, 
+    res.json({
+      success: true,
       jobs: userJobs,
-      count: userJobs.length 
+      count: userJobs.length,
     });
   } catch (error) {
     console.error("Error fetching user posts:", error);
-    res.status(500).json({ 
-      success: false, 
-      message: "Server error while fetching user posts" 
+    res.status(500).json({
+      success: false,
+      message: "Server error while fetching user posts",
     });
   }
 };

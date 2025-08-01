@@ -19,27 +19,21 @@ const JobListingComponent = () => {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [filterType, setFilterType] = useState("all"); // 'all', 'skill', 'location', 'tags'
+  const [filterType, setFilterType] = useState("all");
   const [filterValue, setFilterValue] = useState("");
   const [searchInput, setSearchInput] = useState("");
   const [userProfile, setUserProfile] = useState(null);
   const [showMatchModal, setShowMatchModal] = useState(null);
 
-  
-
-  // Mock authentication handler (replace with your actual auth logic)
-
-  // Check authentication on component mount
   useEffect(() => {
     const token = localStorage.getItem("jwtToken");
     if (!token) {
       setError("Not authenticated. Please log in.");
-      // In a real app, you'd handle logout here
-      
+
       handleLogout();
       return;
     }
-    // Load all jobs initially
+
     fetchUserProfile();
     fetchJobs();
   }, [handleLogout]);
@@ -54,10 +48,8 @@ const JobListingComponent = () => {
       setLoading(false);
       return;
     }
-   
 
     try {
-  
       let url = "http://localhost:5000/api/jobs/get-jobs";
       const API_BASE_URL = "http://localhost:5000/api/jobs";
 
@@ -101,12 +93,15 @@ const JobListingComponent = () => {
     if (!token) return;
 
     try {
-      const response = await fetch(`http://localhost:5000/api/user/get-profile`, {
-        method: 'GET',
-         headers: {
-            'token': token,
+      const response = await fetch(
+        `http://localhost:5000/api/user/get-profile`,
+        {
+          method: "GET",
+          headers: {
+            token: token,
           },
-      });
+        }
+      );
       const data = await response.json();
       if (response.ok) {
         setUserProfile(data.userData);
@@ -158,7 +153,7 @@ const JobListingComponent = () => {
     }
     setShowMatchModal({ jobId, jobDescription });
   };
- 
+
   return (
     <div className="max-w-6xl mx-auto p-6">
       {/* Header */}
