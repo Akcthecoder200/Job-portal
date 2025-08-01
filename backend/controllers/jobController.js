@@ -37,7 +37,7 @@ export const getJobs = async (req, res) => {
   try {
     console.log("Fetching all jobs");
     const jobs = await Job.find().populate("postedBy", "name email");
-    console.log(jobs);
+    // console.log(jobs);
     
     res.json({ success: true, jobs });
   } catch (error) {

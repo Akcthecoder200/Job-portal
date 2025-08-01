@@ -9,6 +9,7 @@ import mongoose from "mongoose";
 import userModel from "./models/userModel.js";
 import dashboardRouter from "./routes/dashboardRoute.js";
 import jobRouter from "./routes/jobRoute.js";
+import generativeRouter from "./routes/generativeRoute.js";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -30,10 +31,9 @@ mongoose
 app.use(cors());
 app.use(express.json());
 
-
 app.use("/api/user", userRouter);
 app.use("/api", dashboardRouter);
 app.use("/api/jobs", jobRouter);
-
+app.use("/api/ai", generativeRouter);
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
