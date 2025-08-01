@@ -100,7 +100,7 @@ export const smartSuggestions = async (req, res) => {
     let chatHistory = [];
     chatHistory.push({ role: "user", parts: [{ text: combinedPrompt }] });
     const payload = { contents: chatHistory };
-    const apiKey = "AIzaSyDW9l9jgavTk-Xu0sa2TEb3_2muHXBDdOs"; 
+    const apiKey = "AIzaSyDW9l9jgavTk-Xu0sa2TEb3_2muHXBDdOs";
     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
 
     const response = await fetch(apiUrl, {
@@ -111,20 +111,25 @@ export const smartSuggestions = async (req, res) => {
 
     const result = await response.json();
     const aiResponseText = result.candidates[0].content.parts[0].text;
-    
+
     // Attempt to parse the response as JSON, cleaning up any non-JSON text
     let aiRecommendations;
     try {
       // First, remove Markdown code fences if present
-      const cleanedResponseText = aiResponseText.replace(/```json|```/g, "").trim();
+      const cleanedResponseText = aiResponseText
+        .replace(/```json|```/g, "")
+        .trim();
       aiRecommendations = JSON.parse(cleanedResponseText);
     } catch (parseError) {
       // If parsing fails, it's likely due to conversational text.
       // Log the original response for debugging and return an empty array.
-      console.error("Failed to parse AI response as JSON. Original response:", aiResponseText);
-      return res.status(500).json({ 
+      console.error(
+        "Failed to parse AI response as JSON. Original response:",
+        aiResponseText
+      );
+      return res.status(500).json({
         message: "Server error: AI provided an unparseable response.",
-        recommendations: [] 
+        recommendations: [],
       });
     }
 
@@ -135,5 +140,58 @@ export const smartSuggestions = async (req, res) => {
   } catch (error) {
     console.error("AI smart suggestions error:", error);
     res.status(500).json({ message: "Server error during smart suggestions." });
+  }
+};
+
+export const extractSkills = async (req, res) => {
+  try {
+    const { text } = req.body;
+
+    if (!text) {
+      return res
+        .status(400)
+        .json({ message: "Please provide text to extract skills from." });
+    }
+
+    const prompt = `Extract all key technical and soft skills from the following text. 
+    Return the skills as a comma-separated list of single words or short phrases. 
+    Do not include any other text, formatting, or explanations in your response.
+    
+    Text:
+    """
+    ${text}
+    """`;
+
+    let chatHistory = [];
+    chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+    const payload = { contents: chatHistory };
+    const apiKey = "AIzaSyDW9l9jgavTk-Xu0sa2TEb3_2muHXBDdOs";
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+    const response = await fetch(apiUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    const result = await response.json();
+    const extractedText = result.candidates[0].content.parts[0].text;
+
+    // Split the comma-separated string into an array and clean up whitespace
+    const skills = extractedText
+      .split(",")
+      .map((s) => s.trim())
+      .filter((s) => s.length > 0)
+      .slice(0, 10);
+
+    res.json({
+      message: "Skills extracted successfully",
+      skills: skills,
+    });
+  } catch (error) {
+    console.error("AI skill extraction error:", error);
+    res
+      .status(500)
+      .json({ message: "Server error during AI skill extraction." });
   }
 };
