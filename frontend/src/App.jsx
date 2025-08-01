@@ -9,6 +9,7 @@ import JobListingComponent from "./components/JobList.jsx";
 import UserPostsComponent from "./components/UserPost.jsx";
 import MainLayout from "./components/Dashboard";
 import Navbar from "./components/Navbar.jsx";
+import SmartSuggestions from "./components/SuggestJob.jsx";
 
 function App() {
   const { isAuthenticated } = useContext(AuthContext);
@@ -23,6 +24,7 @@ function App() {
               <Route path="/post-job" element={<PostJobComponent />} />
               <Route path="/jobs" element={<JobListingComponent />} />
               <Route path="/my-posts" element={<UserPostsComponent />} />
+              <Route path="/suggestions" element={<SmartSuggestions />} />
               <Route path="*" element={<Navigate to="/" />} />
             </Route>
           </Routes>

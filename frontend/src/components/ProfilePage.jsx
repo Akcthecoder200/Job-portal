@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../context/context';
+import { Plus, X } from 'lucide-react';
 
 const ProfilePage = () => {
   const { handleLogout } = useContext(AuthContext);
@@ -9,12 +10,13 @@ const ProfilePage = () => {
     linkedinUrl: '',
     email: '',
     walletAddress: '',
-    skills: '',
+    skills: [],
     _id: '',
   });
   const [editMode, setEditMode] = useState(false);
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [skillInput, setSkillInput] = useState('');
 
   const API_BASE_URL = 'http://localhost:5000/api/user';
 
@@ -47,7 +49,7 @@ const ProfilePage = () => {
             linkedinUrl: data.userData.linkedinUrl || '',
             email: data.userData.email || '',
             walletAddress: data.userData.walletAddress || '',
-            skills: (data.userData.skills || []).join(', '),
+            skills: Array.isArray(data.userData.skills) ? data.userData.skills : [],
             _id: data.userData._id || '',
           });
         } else {
@@ -57,7 +59,7 @@ const ProfilePage = () => {
           handleLogout();
         }
       } catch (error) {
-         setMessage('Network error or server unavailable.'); 
+        setMessage('Network error or server unavailable.');
         console.error('Profile fetch error:', error);
         localStorage.removeItem('jwtToken');
         localStorage.removeItem('userEmail');
@@ -72,6 +74,25 @@ const ProfilePage = () => {
 
   const handleProfileChange = (e) => {
     setProfile({ ...profile, [e.target.name]: e.target.value });
+  };
+
+  // --- Skill management like PostJob ---
+  const addSkill = () => {
+    const skill = skillInput.trim();
+    if (skill && !profile.skills.includes(skill)) {
+      setProfile(prev => ({
+        ...prev,
+        skills: [...prev.skills, skill]
+      }));
+      setSkillInput('');
+    }
+  };
+
+  const removeSkill = (skillToRemove) => {
+    setProfile(prev => ({
+      ...prev,
+      skills: prev.skills.filter(skill => skill !== skillToRemove)
+    }));
   };
 
   const handleSaveProfile = async () => {
@@ -102,7 +123,7 @@ const ProfilePage = () => {
       }
     } catch (error) {
       setMessage('Network error or server unavailable.');
-        console.error('Profile update error:', error);
+      console.error('Profile update error:', error);
     } finally {
       setIsLoading(false);
     }
@@ -118,20 +139,17 @@ const ProfilePage = () => {
 
   if (message && !editMode) {
     return (
-    //   <div className="min-h-screen flex items-center justify-center bg-gray-100">
-    //     <div className="bg-white p-8 rounded shadow">
-    //       <p className="text-red-600">{message}</p>
-    //       <button
-    //         onClick={handleLogout}
-    //         className="mt-4 bg-red-600 text-white px-4 py-2 rounded"
-    //       >
-    //         Logout
-    //       </button>
-    //     </div>
-    //   </div>
-    <div>
-        <ProfilePage/>
-    </div>
+      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <div className="bg-white p-8 rounded shadow">
+          <p className="text-red-600">{message}</p>
+          <button
+            onClick={handleLogout}
+            className="mt-4 bg-red-600 text-white px-4 py-2 rounded"
+          >
+            Logout
+          </button>
+        </div>
+      </div>
     );
   }
 
@@ -193,16 +211,45 @@ const ProfilePage = () => {
         />
       </div>
       <div className="mb-4">
-        <label className="block font-semibold mb-1">Skills (comma separated)</label>
-        <input
-          type="text"
-          name="skills"
-          value={profile.skills}
-          onChange={handleProfileChange}
-          disabled={!editMode}
-          className="w-full border rounded px-3 py-2"
-          placeholder="e.g. JavaScript, React, Node.js"
-        />
+        <label className="block font-semibold mb-1">Skills</label>
+        <div className="flex gap-2 mb-2">
+          <input
+            type="text"
+            value={skillInput}
+            onChange={(e) => setSkillInput(e.target.value)}
+            onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addSkill())}
+            disabled={!editMode}
+            className="flex-1 px-3 py-2 border border-gray-300 rounded-md"
+            placeholder="e.g. JavaScript"
+          />
+          <button
+            type="button"
+            onClick={addSkill}
+            disabled={!editMode}
+            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+          >
+            <Plus className="w-4 h-4" />
+          </button>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {profile.skills.map((skill, idx) => (
+            <span
+              key={idx}
+              className="inline-flex items-center gap-1 px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm"
+            >
+              {skill}
+              {editMode && (
+                <button
+                  type="button"
+                  onClick={() => removeSkill(skill)}
+                  className="text-blue-600 hover:text-blue-800"
+                >
+                  <X className="w-3 h-3" />
+                </button>
+              )}
+            </span>
+          ))}
+        </div>
       </div>
       <div className="flex gap-2">
         {editMode ? (

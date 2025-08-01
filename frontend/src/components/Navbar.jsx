@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import { AuthContext } from "../context/context.jsx";
-import { Briefcase, FileText, LayoutDashboard, LogOut, User } from "lucide-react";
+import { Briefcase, FileText, LayoutDashboard, Lightbulb, LogOut, User } from "lucide-react";
 
 function Navbar() {
   const { handleLogout } = useContext(AuthContext);
@@ -34,6 +34,10 @@ function Navbar() {
             <NavLink to="/profile" className={navLinkClass}>
               <User className="w-5 h-5 mr-2" />
               Profile
+            </NavLink>
+            <NavLink to="/suggestions" className={navLinkClass}>
+              <Lightbulb className="w-5 h-5 mr-2" />
+              Suggestions
             </NavLink>
           </nav>
           {/* Logout Button */}
