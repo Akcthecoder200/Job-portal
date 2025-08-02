@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Briefcase,
   User,
@@ -14,17 +14,21 @@ import {
   Smartphone,
   MapPin,
   DollarSign,
+  
   Target,
   Sparkles,
   RefreshCcw,
   CheckCircle,
   Lightbulb,
+  Menu,
+  X,
 } from "lucide-react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 
 // The main App component representing the entire landing page.
 export default function MainLayout() {
   const Navigate = useNavigate();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const sections = [
     { id: "features", text: "Features" },
     { id: "tech-stack", text: "Tech Stack" },
@@ -54,7 +58,7 @@ export default function MainLayout() {
             <span className="text-2xl font-bold text-gray-900">JobPortal</span>
           </div>
 
-          {/* Navigation Links */}
+          {/* Desktop Navigation Links */}
           <div className="hidden md:flex space-x-8">
             {sections.map((section) => (
               <a
@@ -63,6 +67,7 @@ export default function MainLayout() {
                 onClick={(e) => {
                   e.preventDefault();
                   scrollToSection(section.id);
+                  setIsMobileMenuOpen(false);
                 }}
                 className="text-gray-600 hover:text-indigo-600 transition-colors duration-200 font-medium"
               >
@@ -71,13 +76,62 @@ export default function MainLayout() {
             ))}
           </div>
 
-          {/* Call to Action Button */}
+          {/* Desktop Call to Action Button */}
           <button
             onClick={() => Navigate("/login")}
             className="hidden md:block bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105"
           >
             Login
           </button>
+
+          {/* Mobile menu button */}
+          <div className="md:hidden flex items-center space-x-2">
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="text-gray-600 focus:outline-none"
+            >
+              {isMobileMenuOpen ? (
+                <X className="w-8 h-8" />
+              ) : (
+                <Menu className="w-8 h-8" />
+              )}
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Menu */}
+        <div
+          className={`md:hidden overflow-hidden transition-all duration-300 ${
+            isMobileMenuOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
+          }`}
+        >
+          <div className="container mx-auto px-4 pb-4">
+            <div className="flex flex-col space-y-2">
+              {sections.map((section) => (
+                <a
+                  key={section.id}
+                  href={`#${section.id}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollToSection(section.id);
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className="text-gray-800 font-medium px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors duration-200"
+                >
+                  {section.text}
+                </a>
+              ))}
+              <button
+                onClick={() => {
+                  Navigate("/login");
+                  setIsMobileMenuOpen(false);
+                }}
+                className="w-full text-left bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg transition-all duration-300 transform hover:scale-105"
+              >
+                Login
+              </button>
+            </div>
+          </div>
         </div>
       </nav>
 
@@ -94,7 +148,8 @@ export default function MainLayout() {
           </p>
           <div className="mt-10 flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
             <Link
-              to="/login"
+              href="#"
+              to={"/login"}
               className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105"
             >
               Get Started
