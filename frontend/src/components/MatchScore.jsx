@@ -14,6 +14,16 @@ const MatchScoreDisplay = ({
   const API_BASE_URL = import.meta.env.VITE_BACKEND_URL
   console.log("Match Score Response:");
 
+  const getScoreColor = (score) => {
+    if (score < 50) {
+      return "text-red-600";
+    } else if (score >= 50 && score <= 75) {
+      return "text-yellow-600";
+    } else {
+      return "text-green-600";
+    }
+  };
+
   useEffect(() => {
     const fetchMatchScore = async () => {
       const token = localStorage.getItem("jwtToken");
@@ -84,7 +94,7 @@ const MatchScoreDisplay = ({
         ) : matchScoreData ? (
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
-              <span className="text-4xl font-extrabold text-green-600">
+              <span className={`text-4xl font-extrabold ${getScoreColor(matchScoreData.matchScore)}`}>
                 {matchScoreData.matchScore}
               </span>
               <span className="text-xl text-gray-600">/100</span>

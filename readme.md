@@ -22,6 +22,7 @@ A modern job portal connecting talent and employers, featuring secure authentica
 ### 3. **AI-Powered Features**
 - **Skill Extraction:** Use Gemini API to extract and suggest skills from resumes.
 - **Smart Suggestions:** Get AI-powered job recommendations and match scores.
+- **Matching:** AI compares user profile and job description for match score and rationale.
 
 ### 4. **Security & Data**
 - **MongoDB Atlas:** All data stored securely in the cloud.
@@ -68,6 +69,9 @@ Create a `.env` file:
 JWT_SECRET=your_jwt_secret_key_here
 MONGO_URI=your_mongodb_atlas_connection_string_here
 GENERATIVE_AI_API_KEY=your_gemini_api_key_here
+ADMIN_WALLET_ADDRESS=your_admin_wallet
+PLATFORM_FEE_ETH=platform_fees
+SEPOLIA_RPC_URL=your_sepolia_network_url
 ```
 Start the backend server:
 ```sh
@@ -78,6 +82,13 @@ npm start
 ```sh
 cd ../frontend
 npm install
+```
+Create a `.env` file:
+```
+VITE_BACKEND_URL=your_backend_url
+```
+Start the frontend:
+```sh
 npm start
 ```
 Visit [http://localhost:3000](http://localhost:3000) to use the app.
@@ -92,7 +103,9 @@ job portal/
 │   ├── controllers/
 │   │   ├── userController.js
 │   │   ├── jobController.js
-│   │   └── generativeController.js
+│   │   ├── generativeController.js
+│   │   ├── paymentController.js
+│   │   └── dashboardController.js
 │   ├── middlewares/
 │   │   └── authUser.js
 │   ├── models/
@@ -100,7 +113,10 @@ job portal/
 │   │   └── jobModel.js
 │   ├── routes/
 │   │   ├── userRoute.js
-│   │   └── jobRoute.js
+│   │   ├── jobRoute.js
+│   │   ├── paymentRoute.js
+│   │   ├── generativeRoute.js
+│   │   └── dashboardRoute.js
 │   └── server.js
 ├── frontend/
 │   ├── src/
@@ -112,7 +128,9 @@ job portal/
 │   │   │   ├── JobList.jsx
 │   │   │   ├── UserPost.jsx
 │   │   │   ├── Navbar.jsx
-│   │   │   └── SuggestJob.jsx
+│   │   │   ├── SuggestJob.jsx
+│   │   │   ├── MatchScore.jsx
+│   │   │   └── LandingPage.jsx
 │   │   ├── context/
 │   │   │   └── context.js
 │   │   └── App.jsx
