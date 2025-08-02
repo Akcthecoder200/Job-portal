@@ -10,7 +10,7 @@ const Login = () => {
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const API_BASE_URL = "http://localhost:5000/api/user";
+  const API_BASE_URL = import.meta.env.VITE_BACKEND_URL
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,7 +27,7 @@ const Login = () => {
     }
 
     try {
-      const response = await fetch(`${API_BASE_URL}/${endpoint}`, {
+      const response = await fetch(`${API_BASE_URL}/user/${endpoint}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

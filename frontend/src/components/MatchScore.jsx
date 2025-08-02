@@ -11,7 +11,7 @@ const MatchScoreDisplay = ({
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const API_BASE_URL = "http://localhost:5000/api";
+  const API_BASE_URL = import.meta.env.VITE_BACKEND_URL
   console.log("Match Score Response:");
 
   useEffect(() => {

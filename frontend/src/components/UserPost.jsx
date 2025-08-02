@@ -1,30 +1,30 @@
-import { useState, useEffect, useContext } from 'react';
-import { 
-  Briefcase, 
-  MapPin, 
-  DollarSign, 
-  Calendar, 
-  Edit, 
-  Trash2, 
-  Eye, 
+import { useState, useEffect, useContext } from "react";
+import {
+  Briefcase,
+  MapPin,
+  DollarSign,
+  Calendar,
+  Edit,
+  Trash2,
+  Eye,
   User,
   BarChart3,
-  Clock
-} from 'lucide-react';
-import { AuthContext } from '../context/context.jsx';
+  Clock,
+} from "lucide-react";
+import { AuthContext } from "../context/context.jsx";
 
 const UserPostsComponent = () => {
-    const { handleLogout } = useContext(AuthContext);
+  const { handleLogout } = useContext(AuthContext);
   const [posts, setPosts] = useState([]);
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
-   const API_BASE_URL = 'http://localhost:5000/api/jobs';
+  const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
   useEffect(() => {
-    const token = localStorage.getItem('jwtToken');
+    const token = localStorage.getItem("jwtToken");
     if (!token) {
-      setError('Not authenticated. Please log in.');
+      setError("Not authenticated. Please log in.");
       handleLogout();
       return;
     }
@@ -33,21 +33,21 @@ const UserPostsComponent = () => {
 
   const fetchUserPosts = async () => {
     setLoading(true);
-    setError('');
-    
-    const token = localStorage.getItem('jwtToken');
+    setError("");
+
+    const token = localStorage.getItem("jwtToken");
     if (!token) {
-      setError('Not authenticated. Please log in.');
+      setError("Not authenticated. Please log in.");
       setLoading(false);
       return;
     }
 
     try {
-      const response = await fetch(`${API_BASE_URL}/my-posts`, {
-        method: 'GET',
+      const response = await fetch(`${API_BASE_URL}/jobs/my-posts`, {
+        method: "GET",
         headers: {
-          'Content-Type': 'application/json',
-          'token': token,
+          "Content-Type": "application/json",
+          token: token,
         },
       });
 
@@ -59,23 +59,23 @@ const UserPostsComponent = () => {
           setStats(data.stats);
         }
       } else {
-        setError(data.message || 'Failed to fetch your posts');
+        setError(data.message || "Failed to fetch your posts");
       }
     } catch (error) {
-      console.error('Error fetching user posts:', error);
-      setError('Network error. Please try again.');
+      console.error("Error fetching user posts:", error);
+      setError("Network error. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
   };
 
@@ -83,26 +83,26 @@ const UserPostsComponent = () => {
     const now = new Date();
     const postDate = new Date(dateString);
     const diffInDays = Math.floor((now - postDate) / (1000 * 60 * 60 * 24));
-    
-    if (diffInDays === 0) return 'Today';
-    if (diffInDays === 1) return 'Yesterday';
+
+    if (diffInDays === 0) return "Today";
+    if (diffInDays === 1) return "Yesterday";
     if (diffInDays < 7) return `${diffInDays} days ago`;
     if (diffInDays < 30) return `${Math.floor(diffInDays / 7)} weeks ago`;
     return `${Math.floor(diffInDays / 30)} months ago`;
   };
 
   const handleEdit = (jobId) => {
-    console.log('Edit job:', jobId);
+    console.log("Edit job:", jobId);
     // Implement edit functionality
   };
 
   const handleDelete = (jobId) => {
-    console.log('Delete job:', jobId);
+    console.log("Delete job:", jobId);
     // Implement delete functionality
   };
 
   const handleView = (jobId) => {
-    console.log('View job:', jobId);
+    console.log("View job:", jobId);
     // Implement view functionality
   };
 
@@ -123,36 +123,50 @@ const UserPostsComponent = () => {
           <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
             <div className="flex items-center gap-2">
               <Briefcase className="w-5 h-5 text-blue-600" />
-              <span className="text-sm font-medium text-blue-800">Total Posts</span>
+              <span className="text-sm font-medium text-blue-800">
+                Total Posts
+              </span>
             </div>
-            <p className="text-2xl font-bold text-blue-900 mt-1">{stats.totalPosts}</p>
+            <p className="text-2xl font-bold text-blue-900 mt-1">
+              {stats.totalPosts}
+            </p>
           </div>
-          
+
           <div className="bg-green-50 p-4 rounded-lg border border-green-200">
             <div className="flex items-center gap-2">
               <Clock className="w-5 h-5 text-green-600" />
-              <span className="text-sm font-medium text-green-800">Recent Posts</span>
+              <span className="text-sm font-medium text-green-800">
+                Recent Posts
+              </span>
             </div>
-            <p className="text-2xl font-bold text-green-900 mt-1">{stats.recentPosts}</p>
+            <p className="text-2xl font-bold text-green-900 mt-1">
+              {stats.recentPosts}
+            </p>
             <p className="text-xs text-green-700">Last 7 days</p>
           </div>
 
           <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
             <div className="flex items-center gap-2">
               <BarChart3 className="w-5 h-5 text-purple-600" />
-              <span className="text-sm font-medium text-purple-800">Active</span>
+              <span className="text-sm font-medium text-purple-800">
+                Active
+              </span>
             </div>
-            <p className="text-2xl font-bold text-purple-900 mt-1">{stats.totalPosts}</p>
+            <p className="text-2xl font-bold text-purple-900 mt-1">
+              {stats.totalPosts}
+            </p>
             <p className="text-xs text-purple-700">All time</p>
           </div>
 
           <div className="bg-orange-50 p-4 rounded-lg border border-orange-200">
             <div className="flex items-center gap-2">
               <Calendar className="w-5 h-5 text-orange-600" />
-              <span className="text-sm font-medium text-orange-800">First Post</span>
+              <span className="text-sm font-medium text-orange-800">
+                First Post
+              </span>
             </div>
             <p className="text-sm font-bold text-orange-900 mt-1">
-              {stats.oldestPost ? getRelativeTime(stats.oldestPost) : 'N/A'}
+              {stats.oldestPost ? getRelativeTime(stats.oldestPost) : "N/A"}
             </p>
           </div>
         </div>
@@ -180,7 +194,9 @@ const UserPostsComponent = () => {
             <div className="text-center py-12 bg-gray-50 rounded-lg">
               <Briefcase className="w-16 h-16 text-gray-300 mx-auto mb-4" />
               <p className="text-gray-500 text-lg mb-2">No job posts yet</p>
-              <p className="text-gray-400">Start by creating your first job posting</p>
+              <p className="text-gray-400">
+                Start by creating your first job posting
+              </p>
               <button className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
                 Create Job Post
               </button>
@@ -189,7 +205,7 @@ const UserPostsComponent = () => {
             <>
               <div className="flex justify-between items-center">
                 <p className="text-gray-600">
-                  {posts.length} job post{posts.length !== 1 ? 's' : ''}
+                  {posts.length} job post{posts.length !== 1 ? "s" : ""}
                 </p>
                 <button
                   onClick={fetchUserPosts}
@@ -200,10 +216,15 @@ const UserPostsComponent = () => {
               </div>
 
               {posts.map((post) => (
-                <div key={post._id} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow border border-gray-200">
+                <div
+                  key={post._id}
+                  className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow border border-gray-200"
+                >
                   <div className="flex justify-between items-start mb-4">
                     <div className="flex-1">
-                      <h3 className="text-xl font-bold text-gray-800 mb-2">{post.title}</h3>
+                      <h3 className="text-xl font-bold text-gray-800 mb-2">
+                        {post.title}
+                      </h3>
                       <div className="flex items-center gap-4 text-sm text-gray-600 mb-2">
                         <div className="flex items-center gap-1">
                           <Calendar className="w-4 h-4" />
@@ -215,7 +236,7 @@ const UserPostsComponent = () => {
                         </div>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => handleView(post._id)}
@@ -241,7 +262,9 @@ const UserPostsComponent = () => {
                     </div>
                   </div>
 
-                  <p className="text-gray-700 mb-4 line-clamp-2">{post.description}</p>
+                  <p className="text-gray-700 mb-4 line-clamp-2">
+                    {post.description}
+                  </p>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                     <div className="flex items-center gap-2">
@@ -250,14 +273,18 @@ const UserPostsComponent = () => {
                     </div>
                     <div className="flex items-center gap-2">
                       <DollarSign className="w-4 h-4 text-green-500" />
-                      <span className="text-gray-700 font-medium">{post.budgetOrSalary}</span>
+                      <span className="text-gray-700 font-medium">
+                        {post.budgetOrSalary}
+                      </span>
                     </div>
                   </div>
 
                   {/* Skills */}
                   {post.skills && post.skills.length > 0 && (
                     <div className="mb-3">
-                      <h4 className="text-sm font-medium text-gray-700 mb-2">Skills:</h4>
+                      <h4 className="text-sm font-medium text-gray-700 mb-2">
+                        Skills:
+                      </h4>
                       <div className="flex flex-wrap gap-2">
                         {post.skills.slice(0, 5).map((skill, index) => (
                           <span

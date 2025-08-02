@@ -48,7 +48,7 @@ const PostJobComponent = () => {
   const [paymentError, setPaymentError] = useState("");
   const [paymentLoading, setPaymentLoading] = useState(false);
 
-  const API_BASE_URL = "http://localhost:5000/api/jobs";
+  const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
   const ADMIN_WALLETS = {
     ethereum: "0x17871d1863412FfAf073552859Af52bF501Caf4D",
@@ -266,7 +266,7 @@ const PostJobComponent = () => {
     setMessage({ type: "", text: "" });
     const token = localStorage.getItem("jwtToken");
     try {
-      const response = await fetch(`${API_BASE_URL}/create-job`, {
+      const response = await fetch(`${API_BASE_URL}/jobs/create-job`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

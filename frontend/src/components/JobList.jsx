@@ -51,18 +51,22 @@ const JobListingComponent = () => {
     }
 
     try {
-      let url = "http://localhost:5000/api/jobs/get-jobs";
-      const API_BASE_URL = "http://localhost:5000/api/jobs";
+      const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
+      let url = `${API_BASE_URL}/jobs/get-jobs`;
 
       // Determine the correct endpoint based on filter type
       if (type === "skill" && value) {
-        url = `${API_BASE_URL}/get-jobs-by-skill/${encodeURIComponent(value)}`;
+        url = `${API_BASE_URL}/jobs/get-jobs-by-skill/${encodeURIComponent(
+          value
+        )}`;
       } else if (type === "location" && value) {
-        url = `${API_BASE_URL}/get-jobs-by-location/${encodeURIComponent(
+        url = `${API_BASE_URL}/jobs/get-jobs-by-location/${encodeURIComponent(
           value
         )}`;
       } else if (type === "tags" && value) {
-        url = `${API_BASE_URL}/get-jobs-by-tags/${encodeURIComponent(value)}`;
+        url = `${API_BASE_URL}/jobs/get-jobs-by-tags/${encodeURIComponent(
+          value
+        )}`;
       }
 
       const response = await fetch(url, {

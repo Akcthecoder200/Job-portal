@@ -39,7 +39,7 @@ const ProfilePage = () => {
   // State to hold the PDF.js library
   const [pdfjs, setPdfjs] = useState(null);
 
-  const API_BASE_URL = "http://localhost:5000/api/user";
+  const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
     // Dynamically import pdf.js to keep bundle size small
@@ -63,7 +63,7 @@ const ProfilePage = () => {
       }
 
       try {
-        const response = await fetch(`${API_BASE_URL}/get-profile`, {
+        const response = await fetch(`${API_BASE_URL}/user/get-profile`, {
           method: "GET",
           headers: {
             token: token,
@@ -130,7 +130,7 @@ const ProfilePage = () => {
     setMessage("");
     const token = localStorage.getItem("jwtToken");
     try {
-      const response = await fetch(`${API_BASE_URL}/update-profile`, {
+      const response = await fetch(`${API_BASE_URL}/user/update-profile`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -239,17 +239,14 @@ const ProfilePage = () => {
 
   const sendExtractionRequest = async (token, text) => {
     try {
-      const response = await fetch(
-        `http://localhost:5000/api/ai/extract-skills`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            token: token,
-          },
-          body: JSON.stringify({ text }),
-        }
-      );
+      const response = await fetch(`${API_BASE_URL}/ai/extract-skills`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          token: token,
+        },
+        body: JSON.stringify({ text }),
+      });
       const data = await response.json();
 
       console.log("AI Extraction Response:", data.skills);
