@@ -1,46 +1,52 @@
-# 🚀 Full-Stack Job Platform with Blockchain Payments
+# 🚀 TalentConnect: Full-Stack Job Platform with Blockchain Payments
 
-A modern job platform connecting talent with opportunities, featuring user authentication, AI-powered skill extraction, job posting, and blockchain-based payment for job listings.
+A modern job portal connecting talent and employers, featuring secure authentication, customizable profiles, AI-powered skill extraction, advanced job posting and filtering, and blockchain-based payments.
 
 ---
 
 ## 🌟 Features
 
 ### 1. **Authentication & Profile Management**
-- **Secure Access:** Register and log in with JWT-based authentication.
-- **Customizable Profiles:** Edit your name, bio, LinkedIn URL, and wallet address.
-- **AI-Powered Skills:** Extract and suggest skills using the Gemini API.
-- **Decentralized Identity:** Link your MetaMask or Phantom wallet.
+- **JWT Authentication:** Secure registration and login.
+- **Profile Editing:** Update name, bio, LinkedIn URL, wallet address, and skills.
+- **Skill Management:** Add/remove skills manually or extract via AI.
+- **Wallet Integration:** Link MetaMask or Phantom wallet for decentralized identity.
 
 ### 2. **Job Posting & Feed**
-- **Post Jobs:** Authenticated users can post jobs with title, description, skills, and budget/salary.
-- **Dynamic Feed:** View all job listings and public posts in a central feed.
-- **Advanced Filtering:** Filter jobs by skill, location, or tags.
-- **Secure Data:** All data stored securely in MongoDB Atlas.
+- **Post Jobs:** Authenticated users can post jobs with title, description, skills, budget/salary, location, and tags.
+- **Blockchain Payment:** Pay a platform fee before posting jobs, verified on-chain.
+- **Job Feed:** View all job listings and posts in a central feed.
+- **Filtering:** Search jobs by skill, location, or tags.
+- **User Posts:** View jobs posted by the logged-in user.
 
-### 3. **Blockchain Payment Integration**
-- **Pre-Post Fee:** Pay a platform fee to the admin wallet before posting a job.
-- **Web3 Integration:** Connect and transact via MetaMask using ethers.js.
-- **On-Chain Verification:** Confirm payments on the blockchain for transparency.
+### 3. **AI-Powered Features**
+- **Skill Extraction:** Use Gemini API to extract and suggest skills from resumes.
+- **Smart Suggestions:** Get AI-powered job recommendations and match scores.
+
+### 4. **Security & Data**
+- **MongoDB Atlas:** All data stored securely in the cloud.
+- **Password Hashing:** User passwords hashed with bcryptjs.
+- **CORS & Environment:** Secure API access and environment variable management.
 
 ---
 
 ## 🛠️ Technologies Used
 
 ### Frontend
-- **React** – User interface
+- **React** – SPA user interface
 - **Tailwind CSS** – Responsive styling
 - **Lucide React** – Icon library
 - **ethers.js** – Ethereum blockchain integration
+- **React Router** – Routing and navigation
 
 ### Backend
-- **Node.js & Express** – API and server logic
-- **MongoDB Atlas & Mongoose** – Cloud database
+- **Node.js & Express** – REST API and server logic
+- **MongoDB Atlas & Mongoose** – Cloud database and ORM
 - **JWT** – Authentication
 - **bcryptjs** – Password hashing
 - **CORS** – Cross-origin requests
 - **dotenv** – Environment variables
-- **Google Gemini API** – AI skill extraction
+- **Google Gemini API** – AI skill extraction and matching
 
 ---
 
@@ -61,6 +67,7 @@ Create a `.env` file:
 ```
 JWT_SECRET=your_jwt_secret_key_here
 MONGO_URI=your_mongodb_atlas_connection_string_here
+GENERATIVE_AI_API_KEY=your_gemini_api_key_here
 ```
 Start the backend server:
 ```sh
@@ -74,6 +81,57 @@ npm install
 npm start
 ```
 Visit [http://localhost:3000](http://localhost:3000) to use the app.
+
+---
+
+## 📂 Project Structure
+
+```
+job portal/
+├── backend/
+│   ├── controllers/
+│   │   ├── userController.js
+│   │   ├── jobController.js
+│   │   └── generativeController.js
+│   ├── middlewares/
+│   │   └── authUser.js
+│   ├── models/
+│   │   ├── userModel.js
+│   │   └── jobModel.js
+│   ├── routes/
+│   │   ├── userRoute.js
+│   │   └── jobRoute.js
+│   └── server.js
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── Dashboard.jsx
+│   │   │   ├── Login.jsx
+│   │   │   ├── ProfilePage.jsx
+│   │   │   ├── PostJob.jsx
+│   │   │   ├── JobList.jsx
+│   │   │   ├── UserPost.jsx
+│   │   │   ├── Navbar.jsx
+│   │   │   └── SuggestJob.jsx
+│   │   ├── context/
+│   │   │   └── context.js
+│   │   └── App.jsx
+│   └── main.jsx
+└── readme.md
+```
+
+---
+
+## 🧩 Key Functionality
+
+- **User Authentication:** JWT-based, with protected routes.
+- **Profile Management:** Edit profile, add/remove skills, wallet integration.
+- **Job Posting:** Form with payment step, skill/tag management, and validation.
+- **Job Listing:** Central feed, filtering by skill/tag/location, user posts.
+- **AI Integration:** Skill extraction from resume, smart job suggestions, match scoring.
+- **Blockchain Payment:** Ethers.js integration for job posting fees.
+- **Error Handling:** Robust backend and frontend error messages.
+- **Responsive Design:** Mobile-friendly UI with Tailwind CSS.
 
 ---
 
