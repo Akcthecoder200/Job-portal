@@ -29,7 +29,12 @@ mongoose
     process.exit(1);
   });
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "*", // Adjust this to your frontend URL
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 app.use("/api/user", userRouter);
