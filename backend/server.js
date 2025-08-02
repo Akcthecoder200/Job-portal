@@ -43,4 +43,8 @@ app.use("/api/jobs", jobRouter);
 app.use("/api/ai", generativeRouter);
 app.use("/api/payment", paymentRouter);
 
+app.get("/", (req, res) => {
+  res.send("Welcome to the Job Portal API");
+});
+
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
