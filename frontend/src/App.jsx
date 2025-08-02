@@ -7,9 +7,10 @@ import { AuthContext } from "./context/context";
 import PostJobComponent from "./components/PostJob.jsx";
 import JobListingComponent from "./components/JobList.jsx";
 import UserPostsComponent from "./components/UserPost.jsx";
-import MainLayout from "./components/Dashboard";
+
 import Navbar from "./components/Navbar.jsx";
 import SmartSuggestions from "./components/SuggestJob.jsx";
+import MainLayout from "./components/LandingPage.jsx";
 
 function App() {
   const { isAuthenticated } = useContext(AuthContext);
@@ -18,19 +19,25 @@ function App() {
     <BrowserRouter>
       <div className="App">
         {isAuthenticated ? (
-          <Routes>
-            <Route path="/" element={<MainLayout />}>
-              <Route path="/profile" element={<ProfilePage />} />
-              <Route path="/post-job" element={<PostJobComponent />} />
-              <Route path="/jobs" element={<JobListingComponent />} />
-              <Route path="/my-posts" element={<UserPostsComponent />} />
-              <Route path="/suggestions" element={<SmartSuggestions />} />
-              <Route path="*" element={<Navigate to="/" />} />
-            </Route>
-          </Routes>
+          <>
+            <Navbar />
+            <Routes>
+              <Route>
+                <Route path="/" element={<Dashboard />} />
+                <Route path="/profile" element={<ProfilePage />} />
+                <Route path="/post-job" element={<PostJobComponent />} />
+                <Route path="/jobs" element={<JobListingComponent />} />
+                <Route path="/my-posts" element={<UserPostsComponent />} />
+                <Route path="/suggestions" element={<SmartSuggestions />} />
+                <Route path="*" element={<Navigate to="/" />} />
+               
+              </Route>
+            </Routes>
+          </>
         ) : (
           <Routes>
-            <Route path="*" element={<Login />} />
+            <Route path="/" element={<MainLayout />} />
+            <Route path="/login" element={<Login />} />
           </Routes>
         )}
       </div>

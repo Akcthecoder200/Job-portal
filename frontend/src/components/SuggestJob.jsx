@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Loader, Lightbulb, XCircle, ChevronRight } from "lucide-react";
+import { Loader, Lightbulb, XCircle, ChevronRight, RefreshCw } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const SmartSuggestions = () => {
@@ -25,10 +25,10 @@ const SmartSuggestions = () => {
 
     try {
       const response = await fetch(`${API_BASE_URL}/ai/smart-suggestions`, {
-       method: 'GET',
-          headers: {
-            'token': token,
-          },
+        method: 'GET',
+        headers: {
+          'token': token,
+        },
       });
 
       const data = await response.json();
@@ -53,24 +53,22 @@ const SmartSuggestions = () => {
   }, []);
 
   return (
-    <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
-      <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-        <Lightbulb className="w-6 h-6 text-yellow-500" />
-        Smart Job Suggestions
-      </h2>
-
-      <div className="bg-blue-50 p-4 rounded-lg border border-blue-200 mb-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <p className="text-sm text-blue-800 font-medium">
-          Get personalized job recommendations based on your profile skills and bio.
-        </p>
+    <div className="bg-white p-6 md:p-8 rounded-2xl shadow-xl border border-gray-100 max-w-2xl mx-auto my-10 transform transition-all duration-300 hover:shadow-2xl">
+      <div className="flex justify-between items-center mb-6 pb-4 border-b border-gray-200">
+        <div className="flex items-center gap-3">
+          <Lightbulb className="w-8 h-8 text-yellow-500" />
+          <h2 className="text-2xl font-extrabold text-gray-900">
+            Smart Job Suggestions
+          </h2>
+        </div>
         <button
           onClick={fetchSuggestions}
           disabled={loading}
-          className="bg-blue-600 text-white font-semibold py-2 px-4 rounded-full flex items-center gap-2 hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="bg-blue-600 text-white font-semibold py-2 px-4 rounded-full flex items-center gap-2 hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm"
         >
           {loading ? (
             <>
-              <Loader className="w-4 h-4 animate-spin" />
+              <RefreshCw className="w-4 h-4 animate-spin" />
               Suggesting...
             </>
           ) : (
@@ -82,43 +80,54 @@ const SmartSuggestions = () => {
       </div>
 
       {loading && (
-        <div className="flex flex-col items-center justify-center py-10 text-gray-500">
-          <Loader className="w-8 h-8 animate-spin mb-4" />
-          <p>Generating personalized recommendations...</p>
+        <div className="flex flex-col items-center justify-center py-12 text-gray-500">
+          <Loader className="w-12 h-12 animate-spin mb-4 text-indigo-500" />
+          <p className="text-lg font-medium">Generating personalized recommendations...</p>
         </div>
       )}
 
       {error && (
-        <div className="flex items-center gap-2 text-red-600 p-4 border border-red-200 rounded-lg bg-red-50">
-          <XCircle className="w-5 h-5" />
+        <div className="flex items-center gap-3 p-5 border border-red-300 rounded-xl bg-red-50 text-red-700 font-medium">
+          <XCircle className="w-6 h-6" />
           <span>{error}</span>
         </div>
       )}
 
       {!loading && !error && suggestions.length > 0 && (
-        <ul className="space-y-4">
-          {suggestions.map((suggestion, index) => (
-            <li
-              key={index}
-              className="p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors"
-            >
-              <h3 className="font-semibold text-lg text-blue-700">
-                {suggestion.title}
-              </h3>
-              <p className="text-sm text-gray-600 mt-1">
-                {suggestion.reason}
-              </p>
-            </li>
-          ))}
-        </ul>
+        <div className="space-y-4">
+          <div className="bg-blue-50 p-4 rounded-xl border border-blue-200 flex items-center gap-3">
+            <Lightbulb className="w-6 h-6 text-blue-600" />
+            <p className="text-sm text-blue-800 font-medium">
+              These suggestions are based on your profile skills and bio.
+            </p>
+          </div>
+          <ul className="space-y-4">
+            {suggestions.map((suggestion, index) => (
+              <li
+                key={index}
+                className="p-5 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors duration-200 shadow-sm border border-gray-100"
+              >
+                <h3 className="font-bold text-lg text-indigo-700">
+                  {suggestion.title}
+                </h3>
+                <p className="text-sm text-gray-600 mt-2 leading-relaxed">
+                  {suggestion.reason}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
 
       {!loading && !error && suggestions.length === 0 && !initialLoad && (
-        <div className="text-center py-10 text-gray-500">
-          <p className="mb-2">No suggestions available at this time.</p>
-          <p className="text-sm">
+        <div className="text-center py-12 text-gray-500">
+          <div className="flex flex-col items-center mb-4">
+            <XCircle className="w-12 h-12 text-gray-300" />
+            <p className="mt-2 text-lg font-medium">No suggestions available at this time.</p>
+          </div>
+          <p className="text-sm mt-4">
             Make sure your{" "}
-            <Link to="/profile" className="text-blue-600 hover:underline">
+            <Link to="/profile" className="text-indigo-600 hover:underline font-bold">
               profile
             </Link>{" "}
             is up-to-date with your skills and bio.
